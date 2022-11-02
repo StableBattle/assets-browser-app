@@ -1,12 +1,12 @@
 import React from "react";
 import useSWR from "swr";
+import { fetchAssetsSorted } from "../utils/assetsFetcher";
 import formatWallet from "../utils/formatWallet";
-import getEventsEthers from "../utils/getEventsEthers";
 
-const EventsTable = () => {
+const AllAssetsTable = () => {
   const { data, error } = useSWR(
     "0xC0662fAee7C84A03B1e58d60256cafeeb08Ab85d",
-    getEventsEthers,
+    fetchAssetsSorted,
     { refreshInterval: 1000 });
   if (error) return <div>"Failed to load data"</div>;
   if (!data) return <div>"Loading"</div>;
@@ -40,4 +40,4 @@ const EventsTable = () => {
   );
 };
 
-export default EventsTable;
+export default AllAssetsTable;

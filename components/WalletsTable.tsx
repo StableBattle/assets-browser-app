@@ -1,15 +1,21 @@
 import React from "react";
-import useSWR from "swr";
-import { fetchAssetsSorted } from "../utils/assetsFetcher";
 import formatWallet from "../utils/formatWallet";
+import { 
+  NewWinnerEvent, 
+  RewardClaimedEvent, 
+  TransferBatchEvent, 
+  TransferSingleEvent } from "../types/ethers-contracts/SBD";
+import formWalletsData from "../utils/formWalletsData";
+import Link from "next/link";
 
-const AllAssetsTable = () => {
-  const { data, error } = useSWR(
-    "0xC0662fAee7C84A03B1e58d60256cafeeb08Ab85d",
-    fetchAssetsSorted,
-    { refreshInterval: 1000 });
-  if (error) return <div>"Failed to load data"</div>;
-  if (!data) return <div>"Loading"</div>;
+const WalletsTable = (props: { events: {
+  evtsSingle: TransferSingleEvent[];
+  evtsBatch: TransferBatchEvent[];
+  evtsWins: NewWinnerEvent[];
+  evtsClaims: RewardClaimedEvent[];
+}; }) => {
+
+  const data = formWalletsData(props.events);
   
   return (
     <div>
@@ -29,7 +35,11 @@ const AllAssetsTable = () => {
         </tr>
         {data.map((wallet) => (
           <tr key={wallet.address}>
-            <td>{formatWallet(wallet.address)}</td>
+            <td>
+              <Link href={`/${wallet.address}`}>
+                {formatWallet(wallet.address)}
+              </Link>
+            </td>
             <td>{`${wallet.knights.length * 1000} USDT`}</td>
             <td>{wallet.rewards.toString()}</td>
             <td>{wallet.knights.length.toString()}</td>
@@ -40,4 +50,4 @@ const AllAssetsTable = () => {
   );
 };
 
-export default AllAssetsTable;
+export default WalletsTable;

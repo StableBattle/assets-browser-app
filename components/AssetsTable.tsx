@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import formatWallet from "../utils/formatWallet";
 import { TypedEventsTuple } from "../utils/eventsFetcher";
 import formWalletsData from "../utils/formWalletsData";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ethers } from "ethers";
+import formatKnightId from "../utils/formatKnightId";
 
 const AssetsTable = (props: { events: TypedEventsTuple })  => {
+  const [showBurnedKnights, setShowBurnedKnights] = useState(false);
+  const onShowBurnedKnights = () => setShowBurnedKnights(!showBurnedKnights);
   const walletRoute = useRouter().query.wallet as string;
 
   const data = formWalletsData(props.events);
@@ -15,6 +18,10 @@ const AssetsTable = (props: { events: TypedEventsTuple })  => {
   
   return (
     <div>
+      <label>
+        <input type="checkbox" checked={showBurnedKnights} onChange={onShowBurnedKnights} />
+        Show burned characters
+      </label>
       <table><tbody>
         <tr key={"header"}>
           <th>Knight</th>
@@ -23,9 +30,11 @@ const AssetsTable = (props: { events: TypedEventsTuple })  => {
           <th>Lost</th>
           <th>To</th>
         </tr>
-        { wallet.knights.map((knight) => (
+        { wallet.knights
+          .filter(knight => !knight.lossTime || (!!knight.lossTime && showBurnedKnights))
+          .map(knight => (
             <tr key={knight.toString()}>
-              <td>{knight.id.toString()}</td>
+              <td>{formatKnightId(knight.id)}</td>
               <td>{knight.recieveTime}</td>
               <td>
                 { 

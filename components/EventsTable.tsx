@@ -138,7 +138,7 @@ const EventsTable = (props: { events: TypedEventsTuple }) => {
               return(
                 <tr>
                   <td>{event.blockNumber}</td>
-                  <td>NewWinner</td>
+                  <td>RewardClaimed</td>
                   <td>{event.args.reward.toString()}</td>
                   <td></td>
                   <td>{event.args.user}</td>

@@ -9,7 +9,7 @@ export default function Wallet() {
   const { data, error } = useSWR(
     SBDAddress,
     fetchEvents,
-    { refreshInterval: 5000 });
+    { refreshInterval: 10000 });
   if (error) {
     console.log(error);
     return <div>Failed to load events data</div>;

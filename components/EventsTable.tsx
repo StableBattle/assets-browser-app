@@ -2,12 +2,16 @@ import { ethers } from "ethers";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
-import { 
+import {
   NewWinnerEvent, 
   RewardClaimedEvent, 
   TransferBatchEvent, 
   TransferSingleEvent } from "../types/ethers-contracts/SBD";
-import { isNewWinnerEvent, isTransferBatchEvent, isTransferSingleEvent } from "../utils/eventTypeGuards";
+import { 
+  isNewWinnerEvent, 
+  isRewardClaimedEvent, 
+  isTransferBatchEvent, 
+  isTransferSingleEvent } from "../utils/eventTypeGuards";
 import filterByWallet from "../utils/filterByWallet";
 import formatKnightId from "../utils/formatKnightId";
 import formatWallet from "../utils/formatWallet";

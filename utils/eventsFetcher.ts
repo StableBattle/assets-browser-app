@@ -19,7 +19,7 @@ export default async function fetchEvents(address : string) : Promise<TypedEvent
   const etherscanProvider = new ethers.providers.EtherscanProvider("goerli", process.env.NEXT_PUBLIC_ETHERSCAN_API_KEY);
   const infuraProvider = new ethers.providers.InfuraProvider("goerli", process.env.NEXT_PUBLIC_INFURA_API_KEY);
 
-  const contract : SBD = SBD__factory.connect(address, etherscanProvider);
+  const contract : SBD = SBD__factory.connect(address, alchemyProvider);
 
   const evtsSingle : TransferSingleEvent[] =
     (await contract.queryFilter(contract.filters.TransferSingle()));

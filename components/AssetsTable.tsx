@@ -18,9 +18,10 @@ const AssetsTable = (props: { events: TypedEventsTuple })  => {
   
   return (
     <div>
+      <h2>Assets: {wallet.knights.filter(knight => !knight.lossTime).length}</h2>
       <label>
         <input type="checkbox" checked={showBurnedKnights} onChange={onShowBurnedKnights} />
-        Show burned characters
+        Show burned and lost characters
       </label>
       <table><tbody>
         <tr key={"header"}>

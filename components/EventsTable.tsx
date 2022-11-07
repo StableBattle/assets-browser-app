@@ -15,7 +15,6 @@ import formEventsData from "../utils/formEventsData";
 
 const EventsTable = (props: { events: TypedEventsTuple }) => {
   const walletRoute = useRouter().query.wallet as string;
-//console.log(`Wallet path: ${walletRoute}`);
 
   const data = formEventsData(filterByWallet(props.events, walletRoute));
   const events = data.evtsAll;

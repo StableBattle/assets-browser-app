@@ -6,15 +6,12 @@ import WalletsTable from '../components/WalletsTable'
 import fetchEvents from '../utils/eventsFetcher'
 
 export default function Home() {
-  const SBDAddress = "0xC0662fAee7C84A03B1e58d60256cafeeb08Ab85d".toLowerCase();
+  const SBDAddress = "0xC0662fAee7C84A03B1e58d60256cafeeb08Ab85d";
 
   const { data, error } = useSWR(
-    {
-      address : SBDAddress,
-      wallet : undefined
-    },
+    SBDAddress,
     fetchEvents,
-    { refreshInterval: 1000 });
+    { refreshInterval: 5000 });
   if (error) {
     console.log(error);
     return <div>Failed to load events data</div>;

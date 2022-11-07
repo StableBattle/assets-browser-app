@@ -1,5 +1,6 @@
 import { ethers } from "ethers";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 import { 
   NewWinnerEvent, 
@@ -7,8 +8,11 @@ import {
   TransferBatchEvent, 
   TransferSingleEvent } from "../types/ethers-contracts/SBD";
 import { isNewWinnerEvent, isTransferBatchEvent, isTransferSingleEvent } from "../utils/eventTypeGuards";
+import filterByWallet from "../utils/filterByWallet";
+import formatKnightId from "../utils/formatKnightId";
 import formatWallet from "../utils/formatWallet";
 import formEventsData from "../utils/formEventsData";
+import printKnights from "../utils/printKnights";
 
 const EventsTable = (props: { events: {
   evtsSingle: TransferSingleEvent[];
@@ -16,7 +20,9 @@ const EventsTable = (props: { events: {
   evtsWins: NewWinnerEvent[];
   evtsClaims: RewardClaimedEvent[];
 }; }) => {
-  const data = formEventsData(props.events);
+  const walletRoute = useRouter().query.wallet as string;
+
+  const data = formEventsData(filterByWallet(props.events, walletRoute));
   const events = data.evtsAll;
   const topics = data.topics;
   
@@ -47,7 +53,7 @@ const EventsTable = (props: { events: {
                         {formatWallet(event.args.to)}
                       </Link>
                     </td>
-                    <td>{event.args.id.toString()}</td>
+                    <td>{formatKnightId(event.args.id)}</td>
                   </tr>
                 )
               }
@@ -64,7 +70,7 @@ const EventsTable = (props: { events: {
                       </Link>
                     </td>
                     <td></td>
-                    <td>{event.args.id.toString()}</td>
+                    <td>{formatKnightId(event.args.id)}</td>
                   </tr>
                 )
               }
@@ -84,7 +90,7 @@ const EventsTable = (props: { events: {
                       {formatWallet(event.args.to)}
                     </Link>
                   </td>
-                  <td>{event.args.id.toString()}</td>
+                  <td>{formatKnightId(event.args.id)}</td>
                 </tr>
               )
             }
@@ -93,7 +99,7 @@ const EventsTable = (props: { events: {
                 <tr>
                   <td>{event.blockNumber}</td>
                   <td>TransferB</td>
-                  <td>Not Supported yet</td>
+                  <td></td>
                   <td>
                     <Link href={`/${event.args.from}`}>
                       {formatWallet(event.args.from)}
@@ -104,7 +110,7 @@ const EventsTable = (props: { events: {
                       {formatWallet(event.args.to)}
                     </Link>
                   </td>
-                  <td>Not Supported yet</td>
+                  <td>{printKnights(event.args.ids)}</td>
                 </tr>
               )
             }

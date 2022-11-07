@@ -7,6 +7,8 @@ import {
   TransferSingleEvent } from "../types/ethers-contracts/SBD";
 import formWalletsData from "../utils/formWalletsData";
 import Link from "next/link";
+import printKnights from "../utils/printKnights";
+import { useRouter } from "next/router";
 
 const WalletsTable = (props: { events: {
   evtsSingle: TransferSingleEvent[];
@@ -14,8 +16,10 @@ const WalletsTable = (props: { events: {
   evtsWins: NewWinnerEvent[];
   evtsClaims: RewardClaimedEvent[];
 }; }) => {
+  const walletRoute = useRouter().query.wallet as string;
 
-  const data = formWalletsData(props.events);
+  const data = formWalletsData(props.events)
+    .filter(wallet => !walletRoute || wallet.address === walletRoute);
   
   return (
     <div>
@@ -24,9 +28,9 @@ const WalletsTable = (props: { events: {
         <tr key={"header"}>
           <th>Wallet</th>
           <th>Staked</th>
+          <th>Wins</th>
           <th>Rewards</th>
           <th>Knights</th>
-          <th>Wons</th>
           {/*
           {Object.keys(data.wallets[0]).map((key) => (
             <th>{key}</th>
@@ -41,9 +45,9 @@ const WalletsTable = (props: { events: {
               </Link>
             </td>
             <td>{`${wallet.knights.length * 1000} USDT`}</td>
-            <td>{wallet.rewards.toString()}</td>
-            <td>{wallet.knights.length.toString()}</td>
             <td>{wallet.wins.toString()}</td>
+            <td>{wallet.rewards.toString()}</td>
+            <td>{printKnights(wallet.knights)}</td>
           </tr>
         ))}
     </div>

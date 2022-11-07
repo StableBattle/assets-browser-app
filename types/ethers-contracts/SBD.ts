@@ -55,6 +55,7 @@ export interface SBDInterface extends utils.Interface {
     "balanceOfBatch(address[],uint256[])": FunctionFragment;
     "burnKnight(uint256)": FunctionFragment;
     "exists(uint256)": FunctionFragment;
+    "exists(uint256)": FunctionFragment;
     "getKnightClan(uint256)": FunctionFragment;
     "getKnightClanOwnerOf(uint256)": FunctionFragment;
     "getKnightCoin(uint256)": FunctionFragment;

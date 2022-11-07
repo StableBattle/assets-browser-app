@@ -14,10 +14,10 @@ export default function formEventsData(
 {
   const { evtsSingle, evtsBatch, evtsWins, evtsClaims } = events;
   const topics = {
-    TransferSingle :  evtsSingle[0].topics[0],
-    TransferBatch : evtsBatch[0].topics[0],
-    NewWinner : evtsWins[0].topics[0],
-    RewardClaimed: evtsClaims[0].topics[0]
+    TransferSingle : !!evtsSingle[0] ? evtsSingle[0].topics[0] : undefined,
+    TransferBatch : !!evtsBatch[0] ? evtsBatch[0].topics[0]  : undefined,
+    NewWinner : !!evtsWins[0] ? evtsWins[0].topics[0] : undefined,
+    RewardClaimed: !!evtsClaims[0] ? evtsClaims[0].topics[0] : undefined
   }
   const evtsAll :
     Array<TransferSingleEvent | TransferBatchEvent | NewWinnerEvent | RewardClaimedEvent>

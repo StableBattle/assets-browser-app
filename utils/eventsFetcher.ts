@@ -3,22 +3,25 @@ import {
   RewardClaimedEvent,
   TransferBatchEvent,
   TransferSingleEvent } from "../types/ethers-contracts/SBD";
-import contractSetup from "./contractSetup";
+import { SBD__factory } from "../types/ethers-contracts/factories/SBD__factory";
+import { SBD } from "../types/ethers-contracts/SBD";
+import { ethers } from "ethers";
+import { useRouter } from "next/router";
 
-export default async function fetchEvents(address : string, wallet? : string) {
-  const SBD = contractSetup(address);
+export default async function fetchEvents(address : string) {
+  const alchemyProvider = new ethers.providers.AlchemyProvider("goerli", "u1LsOL2DBC0PEV91z2RV2lXpxdiwPAnq");
+//const etherscanProvider = new ethers.providers.EtherscanProvider("goerli", "P2PVFYSEXPBA4A9NZP4DBEJV1C53HAK83H")
+  const SDBAddress = "0xC0662fAee7C84A03B1e58d60256cafeeb08Ab85d";
+
+  const contract : SBD = SBD__factory.connect(address, alchemyProvider);
 
   const evtsSingle : TransferSingleEvent[] =
-    (await SBD.queryFilter(SBD.filters.TransferSingle()))
-    .filter(evt => (!wallet || evt.args.to === wallet || evt.args.from === wallet));
+    (await contract.queryFilter(contract.filters.TransferSingle()));
   const evtsBatch : TransferBatchEvent[] =
-    (await SBD.queryFilter(SBD.filters.TransferBatch()))
-    .filter(evt => (!wallet || evt.args.to === wallet || evt.args.from === wallet));
+    (await contract.queryFilter(contract.filters.TransferBatch()));
   const evtsWins : NewWinnerEvent[] =
-    (await SBD.queryFilter(SBD.filters.NewWinner()))
-    .filter(evt => (!wallet || evt.args.user === wallet));
+    (await contract.queryFilter(contract.filters.NewWinner()));
   const evtsClaims : RewardClaimedEvent[] =
-    (await SBD.queryFilter(SBD.filters.RewardClaimed()))
-    .filter(evt => (!wallet || evt.args.user === wallet));
+    (await contract.queryFilter(contract.filters.RewardClaimed()));
   return { evtsSingle, evtsBatch, evtsWins, evtsClaims }
 }

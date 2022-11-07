@@ -1,3 +1,5 @@
-export default function formatWallet(knightId : string) : string {
-  return "..." + knightId.slice(75);
+import { BigNumber } from "ethers";
+
+export default function formatKnightId(knightId : BigNumber) : string {
+  return "..." + knightId.toString().slice(75);
 }

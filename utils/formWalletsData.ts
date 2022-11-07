@@ -105,6 +105,5 @@ export default function formWalletsData(
     const id = wallets.findIndex(wallet => wallet.address == evt.args.user);
     wallets[id].rewards = wallets[id].rewards.sub(evt.args.reward);
   }
-  console.log(wallets);
   return wallets;
 }

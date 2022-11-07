@@ -1,12 +1,7 @@
-import { NewWinnerEvent, RewardClaimedEvent, TransferBatchEvent, TransferSingleEvent } from "../types/ethers-contracts/SBD";
+import { TypedEventsTuple } from "./eventsFetcher";
 
 export default function filterByWallet(
-  events : {
-    evtsSingle: TransferSingleEvent[];
-    evtsBatch: TransferBatchEvent[];
-    evtsWins: NewWinnerEvent[];
-    evtsClaims: RewardClaimedEvent[];
-  },
+  events : TypedEventsTuple,
   wallet : string
 ) {
   const evtsSingle = 

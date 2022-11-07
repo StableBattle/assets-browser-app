@@ -4,7 +4,6 @@ import { TypedEventsTuple } from "../utils/eventsFetcher";
 import formWalletsData from "../utils/formWalletsData";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import formatKnightId from "../utils/formatKnightId";
 import { ethers } from "ethers";
 
 const AssetsTable = (props: { events: TypedEventsTuple })  => {

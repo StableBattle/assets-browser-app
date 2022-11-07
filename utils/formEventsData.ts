@@ -1,17 +1,6 @@
-import { 
-  NewWinnerEvent,
-  RewardClaimedEvent,
-  TransferBatchEvent,
-  TransferSingleEvent } from "../types/ethers-contracts/SBD";
+import { TypedEventsTuple } from "./eventsFetcher";
 
-export default function formEventsData(
-  events : {
-    evtsSingle: TransferSingleEvent[];
-    evtsBatch: TransferBatchEvent[];
-    evtsWins: NewWinnerEvent[];
-    evtsClaims: RewardClaimedEvent[];
-  })
-{
+export default function formEventsData(events : TypedEventsTuple) {
   const { evtsSingle, evtsBatch, evtsWins, evtsClaims } = events;
   const topics = {
     TransferSingle : !!evtsSingle[0] ? evtsSingle[0].topics[0] : undefined,
@@ -19,9 +8,7 @@ export default function formEventsData(
     NewWinner : !!evtsWins[0] ? evtsWins[0].topics[0] : undefined,
     RewardClaimed: !!evtsClaims[0] ? evtsClaims[0].topics[0] : undefined
   }
-  const evtsAll :
-    Array<TransferSingleEvent | TransferBatchEvent | NewWinnerEvent | RewardClaimedEvent>
-    = [...evtsSingle, ...evtsBatch, ...evtsWins, ...evtsClaims]
+  const evtsAll = [...evtsSingle, ...evtsBatch, ...evtsWins, ...evtsClaims]
     .sort(
       //earliest events first, latest last
       (evt1, evt2) =>

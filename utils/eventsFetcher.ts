@@ -15,7 +15,7 @@ export interface TypedEventsTuple {
 }
 
 export default async function fetchEvents(address : string) : Promise<TypedEventsTuple> {
-  const alchemyProvider = new ethers.providers.AlchemyProvider("goerli", process.env.NEXT_PUBLIC_ALCHEMY_API_KEY);
+  const alchemyProvider = new ethers.providers.AlchemyProvider("goerli", "u1LsOL2DBC0PEV91z2RV2lXpxdiwPAnq");
   const etherscanProvider = new ethers.providers.EtherscanProvider("goerli", process.env.NEXT_PUBLIC_ETHERSCAN_API_KEY);
   const infuraProvider = new ethers.providers.InfuraProvider("goerli", process.env.NEXT_PUBLIC_INFURA_API_KEY);
 

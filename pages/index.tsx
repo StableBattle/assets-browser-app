@@ -1,8 +1,5 @@
-import Head from 'next/head'
-import Image from 'next/image'
 import useSWR from 'swr'
-import EventsTable from '../components/EventsTable'
-import WalletsTable from '../components/WalletsTable'
+import EventWalletSwitch from '../components/EventWalletSwitch'
 import fetchEvents from '../utils/eventsFetcher'
 
 export default function Home() {
@@ -20,8 +17,7 @@ export default function Home() {
 
   return (
     <div>
-      <EventsTable events = { data }/>
-      <WalletsTable events = { data }/>
+      <EventWalletSwitch events = { data } />
     </div>
   )
 }

@@ -2,9 +2,17 @@ import { ethers, BigNumber } from "ethers";
 import { NewWinnerEvent, RewardClaimedEvent, TransferBatchEvent, TransferSingleEvent } from "../types/ethers-contracts/SBD";
 import { isTransferBatchEvent, isTransferSingleEvent } from "./eventTypeGuards";
 
+export interface knightData {
+  id: BigNumber;
+  recieveTime: number;
+  reciveFrom: string;
+  lossTime?: number;
+  lostTo?: string;
+}
+
 export interface walletData {
   address: string;
-  knights: BigNumber[];
+  knights: knightData[];
   wins: number;
   rewards: BigNumber;
 }
@@ -13,12 +21,12 @@ function handleTransfers(
   evtsSingle : TransferSingleEvent[],
   evtsBatch : TransferBatchEvent[]
   ) : walletData[] {
+    //From topics to differentiate between combined events
     const topics = {
       TransferSingle :  evtsSingle[0].topics[0],
-      TransferBatch : evtsBatch[0].topics[0],
-      NewWinner : undefined,
-      RewardClaimed: undefined
+      TransferBatch : evtsBatch[0].topics[0]
     }
+    //Combine and sort Transfer events
     const evtsTransfer = [...evtsSingle, ...evtsBatch]
     .sort(
       //earliest events first, latest last
@@ -29,16 +37,21 @@ function handleTransfers(
         evt1.logIndex < evt2.logIndex ? -1 :
         0
       )
+    //Form wallet data
     let wallets : walletData[] = [];
     for (const evt of evtsTransfer) {
       const to = wallets.findIndex(wallet => wallet.address == evt.args.to);
       const from = wallets.findIndex(wallet => wallet.address == evt.args.from);
-      //To wallet not registerred and not a burn
+      //"To" wallet not registerred and not a burn
       if (to == -1 && evt.args.to != ethers.constants.AddressZero) {
         if(isTransferSingleEvent(evt, topics)) {
           wallets.push({
             address : evt.args.to,
-            knights: [evt.args.id],
+            knights: [{
+              id : evt.args.id,
+              recieveTime: evt.blockNumber,
+              reciveFrom: evt.args.from
+            }],
             wins: 0,
             rewards: BigNumber.from(0)
           })
@@ -46,37 +59,59 @@ function handleTransfers(
         if(isTransferBatchEvent(evt, topics)) {
           wallets.push({
             address : evt.args.to,
-            knights: evt.args.ids,
+            knights: evt.args.ids.map(knightId => ({
+              id : knightId,
+              recieveTime: evt.blockNumber,
+              reciveFrom: evt.args.from
+            })),
             wins: 0,
             rewards: BigNumber.from(0)
           })
         }
       }
-      //From wallet registered, cannot be 0 due to first condition
+      //"From" wallet registered, cannot be 0 due to first condition
       if (from != -1) {
         if(isTransferSingleEvent(evt, topics)) {
-          wallets[from].knights.filter(knight => knight !== evt.args.id);
+          //Find index of the knight in question and edit it
+          const knightInData = wallets[from].knights.findIndex(knight => knight.id.eq(evt.args.id));
+          wallets[from].knights[knightInData] = {
+            id: wallets[from].knights[knightInData].id,
+            recieveTime: wallets[from].knights[knightInData].recieveTime,
+            reciveFrom: wallets[from].knights[knightInData].reciveFrom,
+            lossTime: evt.blockNumber,
+            lostTo: evt.args.to
+          }
         }
         if(isTransferBatchEvent(evt, topics)) {
-          wallets[from].knights.filter(
-            knight => {
-              for (const id of evt.args.ids) {
-                if (knight === id) {
-                  return false;
-                }
-              }
-              return true;
+          for(const knightId of evt.args.ids) {
+            const knightInData = wallets[from].knights.findIndex(knight => knight.id.eq(knightId));
+            wallets[from].knights[knightInData] = {
+              id: wallets[from].knights[knightInData].id,
+              recieveTime: wallets[from].knights[knightInData].recieveTime,
+              reciveFrom: wallets[from].knights[knightInData].reciveFrom,
+              lossTime: evt.blockNumber,
+              lostTo: evt.args.to
             }
-          )
+          }
         }
       }
-      //To wallet registered, cannot be 0 due to first condition
+      //"To" wallet registered, cannot be 0 due to first condition
       if (to != -1) {
         if(isTransferSingleEvent(evt, topics)) {
-          wallets[to].knights.push(evt.args.id);
+          wallets[to].knights.push({
+            id : evt.args.id,
+            recieveTime: evt.blockNumber,
+            reciveFrom: evt.args.from
+          })
         }
         if(isTransferBatchEvent(evt, topics)) {
-          wallets[to].knights.concat(evt.args.ids);
+          for (const knightId of evt.args.ids) {
+            wallets[to].knights.push({
+              id : knightId,
+              recieveTime: evt.blockNumber,
+              reciveFrom: evt.args.from
+            })
+          }
         }
       }
     }

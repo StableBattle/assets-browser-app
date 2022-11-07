@@ -2,11 +2,7 @@ import { ethers } from "ethers";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
-import {
-  NewWinnerEvent, 
-  RewardClaimedEvent, 
-  TransferBatchEvent, 
-  TransferSingleEvent } from "../types/ethers-contracts/SBD";
+import { TypedEventsTuple } from "../utils/eventsFetcher";
 import { 
   isNewWinnerEvent, 
   isRewardClaimedEvent, 
@@ -17,13 +13,9 @@ import formatKnightId from "../utils/formatKnightId";
 import formatWallet from "../utils/formatWallet";
 import formEventsData from "../utils/formEventsData";
 
-const EventsTable = (props: { events: {
-  evtsSingle: TransferSingleEvent[];
-  evtsBatch: TransferBatchEvent[];
-  evtsWins: NewWinnerEvent[];
-  evtsClaims: RewardClaimedEvent[];
-}; }) => {
+const EventsTable = (props: { events: TypedEventsTuple }) => {
   const walletRoute = useRouter().query.wallet as string;
+//console.log(`Wallet path: ${walletRoute}`);
 
   const data = formEventsData(filterByWallet(props.events, walletRoute));
   const events = data.evtsAll;
@@ -31,8 +23,7 @@ const EventsTable = (props: { events: {
   
   return (
     <div>
-      <h1>Events found: {events.length}</h1>
-      <h2>Events</h2>
+      <h2>Events: {events.length}</h2>
       <table><tbody>
         <tr key={"header"}>
           <th>Block</th>

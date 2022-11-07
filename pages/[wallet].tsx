@@ -1,10 +1,11 @@
+import { useRouter } from 'next/router';
 import useSWR from 'swr'
-import EventsTable from '../components/EventsTable'
-import WalletsTable from '../components/WalletsTable'
+import EventAssetSwitch from '../components/EventAssetSwitch';
 import fetchEvents from '../utils/eventsFetcher'
 
 export default function Wallet() {
   const SBDAddress = "0xC0662fAee7C84A03B1e58d60256cafeeb08Ab85d";
+  const walletRoute = useRouter().query.wallet as string;
 
   const { data, error } = useSWR(
     SBDAddress,
@@ -17,9 +18,11 @@ export default function Wallet() {
   if (!data) return <div>Loading events data</div>;
 
   return (
-    <div>
-      <EventsTable events = { data }/>
-      <WalletsTable events = { data }/>
-    </div>
+    <>
+      <h1>Wallet {walletRoute}</h1>
+      <div>
+        <EventAssetSwitch events = { data } />
+      </div>
+    </>
   )
 }

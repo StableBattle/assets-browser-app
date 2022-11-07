@@ -1,21 +1,12 @@
 import React from "react";
 import formatWallet from "../utils/formatWallet";
-import { 
-  NewWinnerEvent, 
-  RewardClaimedEvent, 
-  TransferBatchEvent, 
-  TransferSingleEvent } from "../types/ethers-contracts/SBD";
+import { TypedEventsTuple } from "../utils/eventsFetcher";
 import formWalletsData from "../utils/formWalletsData";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import formatKnightId from "../utils/formatKnightId";
 
-const WalletsTable = (props: { events: {
-  evtsSingle: TransferSingleEvent[];
-  evtsBatch: TransferBatchEvent[];
-  evtsWins: NewWinnerEvent[];
-  evtsClaims: RewardClaimedEvent[];
-}; }) => {
+const WalletsTable = (props: { events: TypedEventsTuple })  => {
   const walletRoute = useRouter().query.wallet as string;
 
   const data = formWalletsData(props.events)
@@ -23,8 +14,11 @@ const WalletsTable = (props: { events: {
   
   return (
     <div>
-      <h1>Wallets found: {data.length}</h1>
-      <h2>Wallets Info</h2>
+      {
+        !walletRoute ?
+        <h2>Wallets: {data.length}</h2> :
+        <></>
+      }
       <table><tbody>
         <tr key={"header"}>
           <th>Wallet</th>
@@ -51,9 +45,11 @@ const WalletsTable = (props: { events: {
             <td>
               <ul>
                 { 
-                  wallet.knights.map(knight =>
+                  wallet.knights
+                  .filter(knight => !!knight.lossTime)
+                  .map(knight =>
                     <li key={wallet.knights.findIndex(k => knight === k)}>
-                      { formatKnightId(knight) }
+                      { formatKnightId(knight.id) }
                     </li>
                   )
                 }

@@ -39,14 +39,14 @@ const WalletsTable = (props: { events: TypedEventsTuple })  => {
                 {formatWallet(wallet.address)}
               </Link>
             </td>
-            <td>{`${wallet.knights.length * 1000} USDT`}</td>
+            <td>{`${wallet.knights.filter(knight => !knight.lossTime).length * 1000} USDT`}</td>
             <td>{wallet.wins.toString()}</td>
             <td>{wallet.rewards.toString()}</td>
             <td>
               <ul>
                 { 
                   wallet.knights
-                  .filter(knight => !!knight.lossTime)
+                  .filter(knight => !knight.lossTime)
                   .map(knight =>
                     <li key={wallet.knights.findIndex(k => knight === k)}>
                       { formatKnightId(knight.id) }

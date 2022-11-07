@@ -12,7 +12,6 @@ import filterByWallet from "../utils/filterByWallet";
 import formatKnightId from "../utils/formatKnightId";
 import formatWallet from "../utils/formatWallet";
 import formEventsData from "../utils/formEventsData";
-import printKnights from "../utils/printKnights";
 
 const EventsTable = (props: { events: {
   evtsSingle: TransferSingleEvent[];
@@ -30,6 +29,7 @@ const EventsTable = (props: { events: {
     <div>
       <h1>Events found: {events.length}</h1>
       <h2>Events</h2>
+      <table><tbody>
         <tr key={"header"}>
           <th>Block</th>
           <th>Type</th>
@@ -110,7 +110,16 @@ const EventsTable = (props: { events: {
                       {formatWallet(event.args.to)}
                     </Link>
                   </td>
-                  <td>{printKnights(event.args.ids)}</td>
+                  <td>
+                    <ul>
+                      { event.args.ids.map(knight =>
+                          <li key={event.args.ids.findIndex(k => knight === k)}>
+                            { formatKnightId(knight) }
+                          </li>
+                        )
+                      }
+                    </ul>
+                  </td>
                 </tr>
               )
             }
@@ -145,6 +154,7 @@ const EventsTable = (props: { events: {
             */
           }
         )}
+      </tbody></table>
     </div>
   );
 };

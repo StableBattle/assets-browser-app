@@ -7,8 +7,8 @@ import {
   TransferSingleEvent } from "../types/ethers-contracts/SBD";
 import formWalletsData from "../utils/formWalletsData";
 import Link from "next/link";
-import printKnights from "../utils/printKnights";
 import { useRouter } from "next/router";
+import formatKnightId from "../utils/formatKnightId";
 
 const WalletsTable = (props: { events: {
   evtsSingle: TransferSingleEvent[];
@@ -25,6 +25,7 @@ const WalletsTable = (props: { events: {
     <div>
       <h1>Wallets found: {data.length}</h1>
       <h2>Wallets Info</h2>
+      <table><tbody>
         <tr key={"header"}>
           <th>Wallet</th>
           <th>Staked</th>
@@ -47,9 +48,20 @@ const WalletsTable = (props: { events: {
             <td>{`${wallet.knights.length * 1000} USDT`}</td>
             <td>{wallet.wins.toString()}</td>
             <td>{wallet.rewards.toString()}</td>
-            <td>{printKnights(wallet.knights)}</td>
+            <td>
+              <ul>
+                { 
+                  wallet.knights.map(knight =>
+                    <li key={wallet.knights.findIndex(k => knight === k)}>
+                      { formatKnightId(knight) }
+                    </li>
+                  )
+                }
+              </ul>
+            </td>
           </tr>
         ))}
+      </tbody></table>
     </div>
   );
 };

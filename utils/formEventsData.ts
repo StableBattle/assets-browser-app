@@ -32,6 +32,6 @@ export default function formEventsData(
         0
       )
     .reverse(); //since we want latest first
-  console.log({ topics, evtsAll });
+//console.log({ topics, evtsAll });
   return { topics, evtsAll };
 }

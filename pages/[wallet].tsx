@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import EventsTable from '../components/EventsTable'
 import WalletsTable from '../components/WalletsTable'

@@ -34,7 +34,7 @@ const WalletsTable = (props: { events: TypedEventsTuple })  => {
         </tr>
         {data.map((wallet) => (
           <tr key={wallet.address}>
-            <td>
+            <td style={{color: "blue"}}>
               <Link href={`/${wallet.address}`}>
                 {formatWallet(wallet.address)}
               </Link>

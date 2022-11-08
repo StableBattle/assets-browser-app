@@ -15,6 +15,13 @@ const AssetsTable = (props: { events: TypedEventsTuple })  => {
   const data = formWalletsData(props.events);
   const wallet = data.find(w => w.address == walletRoute);
   if(!wallet) return(<div>{"Wallet not found :("}</div>)
+  const tableHeaders = [
+    "Knight",
+    "Recieved",
+    "From",
+    "Lost",
+    "To"
+  ].slice(0, !showBurnedKnights ? -2 : 100);
   
   return (
     <div>
@@ -25,40 +32,55 @@ const AssetsTable = (props: { events: TypedEventsTuple })  => {
       </label>
       <table><tbody>
         <tr key={"header"}>
-          <th>Knight</th>
-          <th>Recieved</th>
-          <th>From</th>
-          <th>Lost</th>
-          <th>To</th>
+          { tableHeaders.map(header => <th>{header}</th>) }
         </tr>
-        { wallet.knights
-          .filter(knight => !knight.lossTime || (!!knight.lossTime && showBurnedKnights))
-          .map(knight => (
-            <tr key={knight.toString()}>
-              <td>{formatKnightId(knight.id)}</td>
-              <td>{knight.recieveTime}</td>
-              <td>
-                { 
-                  knight.reciveFrom === ethers.constants.AddressZero ?
-                    "Minted" :
-                    <Link href={`/${knight.reciveFrom}`}>
-                      {formatWallet(knight.reciveFrom)}
-                    </Link>
-                }
-              </td>
-              <td>{!knight.lossTime ? "" : knight.lossTime}</td>
-              <td>
-                {
-                  !knight.lostTo ? "" :
-                    knight.lostTo === ethers.constants.AddressZero ?
-                      "Burned" : 
-                      <Link href={`/${knight.lostTo}`}>
-                        {formatWallet(knight.lostTo)}
+        { showBurnedKnights ?
+            wallet.knights
+            .map(knight => (
+              <tr key={knight.toString()}>
+                <td>{formatKnightId(knight.id)}</td>
+                <td>{knight.recieveTime}</td>
+                <td style={{color: "blue"}}>
+                  { 
+                    knight.reciveFrom === ethers.constants.AddressZero ?
+                      <Link href={`https://www.w3schools.com/css/css_form.asp`}>
+                        Minted
+                      </Link> :
+                      <Link href={`/${knight.reciveFrom}`}>
+                        {formatWallet(knight.reciveFrom)}
                       </Link>
-                }
+                  }
                 </td>
-            </tr>
-          ))
+                <td>{!knight.lossTime ? "" : knight.lossTime}</td>
+                <td style={{color: "blue"}}>
+                  {
+                    !knight.lostTo ? "" :
+                      knight.lostTo === ethers.constants.AddressZero ?
+                        "Burned" : 
+                        <Link href={`/${knight.lostTo}`}>
+                          {formatWallet(knight.lostTo)}
+                        </Link>
+                  }
+                  </td>
+              </tr>
+            )) :
+            wallet.knights
+            .filter(knight => !knight.lossTime)
+            .map(knight => (
+              <tr key={knight.toString()}>
+                <td>{formatKnightId(knight.id)}</td>
+                <td>{knight.recieveTime}</td>
+                <td style={{color: "blue"}}>
+                  { 
+                    knight.reciveFrom === ethers.constants.AddressZero ?
+                      "Minted" :
+                      <Link href={`/${knight.reciveFrom}`}>
+                        {formatWallet(knight.reciveFrom)}
+                      </Link>
+                  }
+                </td>
+              </tr>
+            ))
         }
       </tbody></table>
     </div>

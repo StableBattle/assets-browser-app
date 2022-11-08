@@ -23,15 +23,18 @@ const EventsTable = (props: { events: TypedEventsTuple }) => {
   return (
     <div>
       <h2>Events: {events.length}</h2>
-      <table><tbody>
-        <tr key={"header"}>
-          <th>Block</th>
-          <th>Type</th>
-          <th>Value USDT</th>
-          <th>Wallet From</th>
-          <th>Wallet To</th>
-          <th>Knight</th>
-        </tr>
+      <table>
+        <thead>
+          <tr key={"header"}>
+            <th>Block</th>
+            <th>Type</th>
+            <th>Value USDT</th>
+            <th>Wallet From</th>
+            <th>Wallet To</th>
+            <th>Knight</th>
+          </tr>
+        </thead>
+        <tbody>
         { events.map((event) => {
             if (isTransferSingleEvent(event, topics)) {
               //Mint
@@ -42,7 +45,7 @@ const EventsTable = (props: { events: TypedEventsTuple }) => {
                     <td>Mint</td>
                     <td>1000</td>
                     <td></td>
-                    <td>
+                    <td style={{color: "blue"}}>
                       <Link href={`/${event.args.to}`}>
                         {formatWallet(event.args.to)}
                       </Link>
@@ -58,7 +61,7 @@ const EventsTable = (props: { events: TypedEventsTuple }) => {
                     <td>{event.blockNumber}</td>
                     <td>Burn</td>
                     <td>-1000</td>
-                    <td>
+                    <td style={{color: "blue"}}>
                       <Link href={`/${event.args.from}`}>
                         {formatWallet(event.args.from)}
                       </Link>
@@ -74,12 +77,12 @@ const EventsTable = (props: { events: TypedEventsTuple }) => {
                   <td>{event.blockNumber}</td>
                   <td>TransferS</td>
                   <td></td>
-                  <td>
+                  <td style={{color: "blue"}}>
                     <Link href={`/${event.args.from}`}>
                       {formatWallet(event.args.from)}
                     </Link>
                   </td>
-                  <td>
+                  <td style={{color: "blue"}}>
                     <Link href={`/${event.args.to}`}>
                       {formatWallet(event.args.to)}
                     </Link>
@@ -94,12 +97,12 @@ const EventsTable = (props: { events: TypedEventsTuple }) => {
                   <td>{event.blockNumber}</td>
                   <td>TransferB</td>
                   <td></td>
-                  <td>
+                  <td style={{color: "blue"}}>
                     <Link href={`/${event.args.from}`}>
                       {formatWallet(event.args.from)}
                     </Link>
                   </td>
-                  <td>
+                  <td style={{color: "blue"}}>
                     <Link href={`/${event.args.to}`}>
                       {formatWallet(event.args.to)}
                     </Link>
@@ -124,7 +127,7 @@ const EventsTable = (props: { events: TypedEventsTuple }) => {
                   <td>NewWinner</td>
                   <td>{event.args.reward.toString()}</td>
                   <td></td>
-                  <td>
+                  <td style={{color: "blue"}}>
                     <Link href={`/${event.args.user}`}>
                       {formatWallet(event.args.user)}
                     </Link>

@@ -5,25 +5,21 @@ import {
   TransferSingleEvent } from "../types/ethers-contracts/SBD";
 
 export function isTransferSingleEvent(
-  event : TransferSingleEvent | TransferBatchEvent | NewWinnerEvent | RewardClaimedEvent,
-  topics : { TransferSingle?: string; TransferBatch?: string; NewWinner?: string; RewardClaimed?: string; }
-  ) : event is TransferSingleEvent
-  { return (event.topics[0] === topics.TransferSingle); }
+  event : TransferSingleEvent | TransferBatchEvent | NewWinnerEvent | RewardClaimedEvent)
+  : event is TransferSingleEvent
+  { return (event.event === "TransferSingle"); }
 
 export function isTransferBatchEvent(
-  event : TransferSingleEvent | TransferBatchEvent | NewWinnerEvent | RewardClaimedEvent,
-  topics : { TransferSingle?: string; TransferBatch?: string; NewWinner?: string; RewardClaimed?: string; }
-  ) : event is TransferBatchEvent
-  { return (event.topics[0] === topics.TransferBatch); }
+  event : TransferSingleEvent | TransferBatchEvent | NewWinnerEvent | RewardClaimedEvent)
+  : event is TransferBatchEvent
+  { return (event.event === "TransferBatch"); }
 
 export function isNewWinnerEvent(
-  event : TransferSingleEvent | TransferBatchEvent | NewWinnerEvent | RewardClaimedEvent,
-  topics : { TransferSingle?: string; TransferBatch?: string; NewWinner?: string; RewardClaimed?: string; }
-  ) : event is NewWinnerEvent
-  { return (event.topics[0] === topics.NewWinner); }
+  event : TransferSingleEvent | TransferBatchEvent | NewWinnerEvent | RewardClaimedEvent)
+  : event is NewWinnerEvent
+  { return (event.event === "NewWinner"); }
 
 export function isRewardClaimedEvent(
-  event : TransferSingleEvent | TransferBatchEvent | NewWinnerEvent | RewardClaimedEvent,
-  topics : { TransferSingle?: string; TransferBatch?: string; NewWinner?: string; RewardClaimed?: string; }
-  ) : event is RewardClaimedEvent
-  { return (event.topics[0] === topics.RewardClaimed); }
+  event : TransferSingleEvent | TransferBatchEvent | NewWinnerEvent | RewardClaimedEvent)
+  : event is RewardClaimedEvent
+  { return (event.event === "RewardClaimed"); }

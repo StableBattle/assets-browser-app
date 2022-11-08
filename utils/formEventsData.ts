@@ -1,14 +1,7 @@
 import { TypedEventsTuple } from "./eventsFetcher";
 
 export default function formEventsData(events : TypedEventsTuple) {
-  const { evtsSingle, evtsBatch, evtsWins, evtsClaims } = events;
-  const topics = {
-    TransferSingle : !!evtsSingle[0] ? evtsSingle[0].topics[0] : undefined,
-    TransferBatch : !!evtsBatch[0] ? evtsBatch[0].topics[0]  : undefined,
-    NewWinner : !!evtsWins[0] ? evtsWins[0].topics[0] : undefined,
-    RewardClaimed: !!evtsClaims[0] ? evtsClaims[0].topics[0] : undefined
-  }
-  const evtsAll = [...evtsSingle, ...evtsBatch, ...evtsWins, ...evtsClaims]
+  return [...events.evtsSingle, ...events.evtsBatch, ...events.evtsWins, ...events.evtsClaims]
     .sort(
       //earliest events first, latest last
       (evt1, evt2) =>
@@ -19,6 +12,4 @@ export default function formEventsData(events : TypedEventsTuple) {
         0
       )
     .reverse(); //since we want latest first
-//console.log({ topics, evtsAll });
-  return { topics, evtsAll };
 }

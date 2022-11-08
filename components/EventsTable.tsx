@@ -17,12 +17,10 @@ const EventsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, 
   const walletRoute = useRouter().query.wallet as string;
 
   const data = formEventsData(filterByWallet(props.events, walletRoute));
-  const events = data.evtsAll;
-  const topics = data.topics;
   
   return (
     <div>
-      <h2>Events: {events.length}</h2>
+      <h2>Events: {data.length}</h2>
       <table>
         <thead>
           <tr key={"header"}>
@@ -35,8 +33,8 @@ const EventsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, 
           </tr>
         </thead>
         <tbody>
-        { events.map((event) => {
-            if (isTransferSingleEvent(event, topics)) {
+        { data.map((event) => {
+            if (isTransferSingleEvent(event)) {
               //Mint
               if (event.args.from === ethers.constants.AddressZero) {
                 return(
@@ -91,7 +89,7 @@ const EventsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, 
                 </tr>
               )
             }
-            if (isTransferBatchEvent(event, topics)) {
+            if (isTransferBatchEvent(event)) {
               return(
                 <tr>
                   <td>{event.blockNumber}</td>
@@ -120,7 +118,7 @@ const EventsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, 
                 </tr>
               )
             }
-            if (isNewWinnerEvent(event, topics)) {
+            if (isNewWinnerEvent(event)) {
               return(
                 <tr>
                   <td>{event.blockNumber}</td>
@@ -137,7 +135,7 @@ const EventsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, 
             }
             //The code below not working due to the wierd type error
             /*
-            if (isRewardClaimedEvent(event, topics)) {
+            if (isRewardClaimedEvent(event)) {
               return(
                 <tr>
                   <td>{event.blockNumber}</td>

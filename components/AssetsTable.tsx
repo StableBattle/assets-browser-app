@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { ethers } from "ethers";
 import formatKnightId from "../utils/formatKnightId";
 
-const AssetsTable = (props: { events: TypedEventsTuple })  => {
+const AssetsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, number> })  => {
   const [showBurnedKnights, setShowBurnedKnights] = useState(false);
   const onShowBurnedKnights = () => setShowBurnedKnights(!showBurnedKnights);
   const walletRoute = useRouter().query.wallet as string;

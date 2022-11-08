@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import formatKnightId from "../utils/formatKnightId";
 
-const WalletsTable = (props: { events: TypedEventsTuple })  => {
+const WalletsTable = (props: { events: TypedEventsTuple})  => {
   const walletRoute = useRouter().query.wallet as string;
 
   const data = formWalletsData(props.events)

@@ -17,7 +17,7 @@ export default function Home() {
 
   return (
     <div>
-      <EventWalletSwitch events = { data } />
+      <EventWalletSwitch events={ data.events } timestamps={ data.timestamps } />
     </div>
   )
 }

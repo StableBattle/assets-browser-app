@@ -13,7 +13,7 @@ import formatKnightId from "../utils/formatKnightId";
 import formatWallet from "../utils/formatWallet";
 import formEventsData from "../utils/formEventsData";
 
-const EventsTable = (props: { events: TypedEventsTuple }) => {
+const EventsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, number> }) => {
   const walletRoute = useRouter().query.wallet as string;
 
   const data = formEventsData(filterByWallet(props.events, walletRoute));

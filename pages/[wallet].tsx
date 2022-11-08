@@ -21,7 +21,7 @@ export default function Wallet() {
     <>
       <h1>Wallet {walletRoute}</h1>
       <div>
-        <EventAssetSwitch events = { data } />
+        <EventAssetSwitch events = { data.events } timestamps={ data.timestamps }  />
       </div>
     </>
   )

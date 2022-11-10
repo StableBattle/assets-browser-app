@@ -44,7 +44,7 @@ function handleTransfers(
       const from = wallets.findIndex(wallet => wallet.address == evt.args.from);
       //"To" wallet not registerred and not a burn
       if (to == -1 && evt.args.to != ethers.constants.AddressZero) {
-        if(isTransferSingleEvent(evt, topics)) {
+        if(isTransferSingleEvent(evt)) {
           wallets.push({
             address : evt.args.to,
             knights: [{
@@ -56,7 +56,7 @@ function handleTransfers(
             rewards: BigNumber.from(0)
           })
         }
-        if(isTransferBatchEvent(evt, topics)) {
+        if(isTransferBatchEvent(evt)) {
           wallets.push({
             address : evt.args.to,
             knights: evt.args.ids.map(knightId => ({
@@ -71,7 +71,7 @@ function handleTransfers(
       }
       //"From" wallet registered, cannot be 0 due to first condition
       if (from != -1) {
-        if(isTransferSingleEvent(evt, topics)) {
+        if(isTransferSingleEvent(evt)) {
           //Find index of the knight in question and edit it
           const knightInData = wallets[from].knights.findIndex(knight => knight.id.eq(evt.args.id));
           wallets[from].knights[knightInData] = {
@@ -82,7 +82,7 @@ function handleTransfers(
             lostTo: evt.args.to
           }
         }
-        if(isTransferBatchEvent(evt, topics)) {
+        if(isTransferBatchEvent(evt)) {
           for(const knightId of evt.args.ids) {
             const knightInData = wallets[from].knights.findIndex(knight => knight.id.eq(knightId));
             wallets[from].knights[knightInData] = {
@@ -97,14 +97,14 @@ function handleTransfers(
       }
       //"To" wallet registered, cannot be 0 due to first condition
       if (to != -1) {
-        if(isTransferSingleEvent(evt, topics)) {
+        if(isTransferSingleEvent(evt)) {
           wallets[to].knights.push({
             id : evt.args.id,
             recieveTime: evt.blockNumber,
             reciveFrom: evt.args.from
           })
         }
-        if(isTransferBatchEvent(evt, topics)) {
+        if(isTransferBatchEvent(evt)) {
           for (const knightId of evt.args.ids) {
             wallets[to].knights.push({
               id : knightId,

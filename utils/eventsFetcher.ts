@@ -15,7 +15,7 @@ export interface TypedEventsTuple {
   evtsClaims: RewardClaimedEvent[];
 }
 
-function contractSetup(address: string) : {contract: SBD, provider: UrlJsonRpcProvider } {
+export function contractSetup(address: string) : {contract: SBD, provider: UrlJsonRpcProvider } {
   const alchemyProvider = new ethers.providers.AlchemyProvider("goerli", "u1LsOL2DBC0PEV91z2RV2lXpxdiwPAnq");
   const etherscanProvider = new ethers.providers.EtherscanProvider("goerli", process.env.NEXT_PUBLIC_ETHERSCAN_API_KEY);
   const infuraProvider = new ethers.providers.InfuraProvider("goerli", process.env.NEXT_PUBLIC_INFURA_API_KEY);

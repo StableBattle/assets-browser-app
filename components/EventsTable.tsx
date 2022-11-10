@@ -40,7 +40,7 @@ const EventsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, 
                 return(
                   <tr>
                     <td>{event.blockNumber}</td>
-                    <td>Mint</td>
+                    <td>KnightMinted</td>
                     <td>1000</td>
                     <td></td>
                     <td style={{color: "blue"}}>
@@ -57,7 +57,7 @@ const EventsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, 
                 return(
                   <tr>
                     <td>{event.blockNumber}</td>
-                    <td>Burn</td>
+                    <td>KnightBurned</td>
                     <td>-1000</td>
                     <td style={{color: "blue"}}>
                       <Link href={`/${event.args.from}`}>
@@ -73,7 +73,7 @@ const EventsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, 
               return(
                 <tr>
                   <td>{event.blockNumber}</td>
-                  <td>TransferS</td>
+                  <td>TransferSingle</td>
                   <td></td>
                   <td style={{color: "blue"}}>
                     <Link href={`/${event.args.from}`}>
@@ -93,7 +93,7 @@ const EventsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, 
               return(
                 <tr>
                   <td>{event.blockNumber}</td>
-                  <td>TransferB</td>
+                  <td>TransferBatch</td>
                   <td></td>
                   <td style={{color: "blue"}}>
                     <Link href={`/${event.args.from}`}>

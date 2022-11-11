@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { ethers } from "ethers";
 import formatKnightId from "../utils/formatKnightId";
+import formatTimestamp from "../utils/fromatTimestamp";
 
 const AssetsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, number> })  => {
   const [showBurnedKnights, setShowBurnedKnights] = useState(false);
@@ -39,19 +40,17 @@ const AssetsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, 
             .map(knight => (
               <tr key={knight.toString()}>
                 <td>{formatKnightId(knight.id)}</td>
-                <td>{knight.recieveTime}</td>
+                <td>{formatTimestamp(props.timestamps.get(knight.recieveTime))}</td>
                 <td style={{color: "blue"}}>
                   { 
                     knight.reciveFrom === ethers.constants.AddressZero ?
-                      <Link href={`https://www.w3schools.com/css/css_form.asp`}>
-                        Minted
-                      </Link> :
+                      "Minted" :
                       <Link href={`/${knight.reciveFrom}`}>
                         {formatWallet(knight.reciveFrom)}
                       </Link>
                   }
                 </td>
-                <td>{!knight.lossTime ? "" : knight.lossTime}</td>
+                <td>{!knight.lossTime ? "" : formatTimestamp(props.timestamps.get(knight.lossTime))}</td>
                 <td style={{color: "blue"}}>
                   {
                     !knight.lostTo ? "" :
@@ -69,7 +68,7 @@ const AssetsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, 
             .map(knight => (
               <tr key={knight.toString()}>
                 <td>{formatKnightId(knight.id)}</td>
-                <td>{knight.recieveTime}</td>
+                <td>{formatTimestamp(props.timestamps.get(knight.recieveTime))}</td>
                 <td style={{color: "blue"}}>
                   { 
                     knight.reciveFrom === ethers.constants.AddressZero ?

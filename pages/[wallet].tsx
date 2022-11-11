@@ -46,7 +46,7 @@ export default function Home() {
           { 
             typeof(walletRoute) === "string" ?
               <div>
-                <input type="submit" value="WalletEvents" onClick={onShowWalletEvents} />
+                <input type="submit" value="Events" onClick={onShowWalletEvents} />
                 <input type="submit" value="Assets" onClick={onShowAssets} />
                 { 
                   showWalletEvents ?

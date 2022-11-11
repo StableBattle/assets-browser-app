@@ -12,6 +12,7 @@ import filterByWallet from "../utils/filterByWallet";
 import formatKnightId from "../utils/formatKnightId";
 import formatWallet from "../utils/formatWallet";
 import formEventsData from "../utils/formEventsData";
+import formatTimestamp from "../utils/fromatTimestamp";
 
 const EventsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, number>, wallet?: string }) => {
   
@@ -38,7 +39,7 @@ const EventsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, 
               if (event.args.from === ethers.constants.AddressZero) {
                 return(
                   <tr>
-                    <td>{event.blockNumber}</td>
+                    <td>{formatTimestamp(props.timestamps.get(event.blockNumber))}</td>
                     <td>KnightMinted</td>
                     <td>1000</td>
                     <td></td>
@@ -55,7 +56,7 @@ const EventsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, 
               if (event.args.to === ethers.constants.AddressZero) {
                 return(
                   <tr>
-                    <td>{event.blockNumber}</td>
+                    <td>{formatTimestamp(props.timestamps.get(event.blockNumber))}</td>
                     <td>KnightBurned</td>
                     <td>-1000</td>
                     <td style={{color: "blue"}}>
@@ -71,7 +72,7 @@ const EventsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, 
               //Transfer
               return(
                 <tr>
-                  <td>{event.blockNumber}</td>
+                  <td>{formatTimestamp(props.timestamps.get(event.blockNumber))}</td>
                   <td>TransferSingle</td>
                   <td></td>
                   <td style={{color: "blue"}}>
@@ -91,7 +92,7 @@ const EventsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, 
             if (isTransferBatchEvent(event)) {
               return(
                 <tr>
-                  <td>{event.blockNumber}</td>
+                  <td>{formatTimestamp(props.timestamps.get(event.blockNumber))}</td>
                   <td>TransferBatch</td>
                   <td></td>
                   <td style={{color: "blue"}}>
@@ -120,7 +121,7 @@ const EventsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, 
             if (isNewWinnerEvent(event)) {
               return(
                 <tr>
-                  <td>{event.blockNumber}</td>
+                  <td>{formatTimestamp(props.timestamps.get(event.blockNumber))}</td>
                   <td>NewWinner</td>
                   <td>{event.args.reward.toNumber() / 1000000}</td>
                   <td></td>
@@ -137,7 +138,7 @@ const EventsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, 
             if (isRewardClaimedEvent(event)) {
               return(
                 <tr>
-                  <td>{event.blockNumber}</td>
+                  <td>{formatTimestamp(props.timestamps.get(event.blockNumber))}</td>
                   <td>RewardClaimed</td>
                   <td>{event.args.reward.toNumber() / 1000000}</td>
                   <td></td>

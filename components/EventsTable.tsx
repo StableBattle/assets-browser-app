@@ -13,8 +13,13 @@ import formatWallet from "../utils/formatWallet";
 import formEventsData from "../utils/formEventsData";
 import formatTimestamp from "../utils/fromatTimestamp";
 
-const EventsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, number>, wallet?: string }) => {
-  
+const EventsTable = (
+  props: {
+    events: TypedEventsTuple,
+    timestamps: Map<number, number>,
+    wallet?: string
+  }
+) => {
   const data : Array<any> = //"any" is here to prevent a type error on rendering RewardClaimed events
     formEventsData(!!props.wallet ? filterByWallet(props.events, props.wallet) : props.events);
   
@@ -138,7 +143,7 @@ const EventsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, 
                 <tr>
                   <td>{formatTimestamp(props.timestamps.get(event.blockNumber))}</td>
                   <td>RewardClaimed</td>
-                  <td>{event.args.reward.toNumber() / 1000000}</td>
+                  <td>-{event.args.reward.toNumber() / 1000000}</td>
                   <td></td>
                   <td style={{color: "blue"}}>
                     <Link href={`/${event.args.user}`}>

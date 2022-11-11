@@ -50,7 +50,7 @@ const AssetsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, 
                     </Link>
                   </td>
                 }
-                <td>{!knight.lossTime ? "" : formatTimestamp(props.timestamps.get(knight.lossTime))}</td>
+                {!knight.lossTime ? "" : <td>{formatTimestamp(props.timestamps.get(knight.lossTime))}</td>}
                 {
                   !knight.lostTo ? "" :
                     knight.lostTo === ethers.constants.AddressZero ?

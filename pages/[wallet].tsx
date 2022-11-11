@@ -43,11 +43,14 @@ export default function Home() {
           </div>
         </td>
         <td style={{textAlign: "left", verticalAlign: "top"}}>
-          { 
+          {
             typeof(walletRoute) === "string" ?
               <div>
                 <input type="submit" value="Events" onClick={onShowWalletEvents} />
                 <input type="submit" value="Assets" onClick={onShowAssets} />
+                <div>
+                  Wallet: {walletRoute}
+                </div>
                 { 
                   showWalletEvents ?
                     <EventsTable events={ data.events } timestamps={ data.timestamps } wallet={ walletRoute } /> :

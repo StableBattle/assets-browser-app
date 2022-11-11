@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { ethers, Event } from "ethers";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
@@ -16,7 +16,8 @@ import formatTimestamp from "../utils/fromatTimestamp";
 
 const EventsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, number>, wallet?: string }) => {
   
-  const data = formEventsData(!!props.wallet ? filterByWallet(props.events, props.wallet) : props.events);
+  const data : Array<any> = //"any" is here to prevent type error on rendering RewardClaimed event
+    formEventsData(!!props.wallet ? filterByWallet(props.events, props.wallet) : props.events);
   
   return (
     <div>
@@ -133,8 +134,6 @@ const EventsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, 
                 </tr>
               )
             }
-            //The code below not working due to the wierd type error
-            /*
             if (isRewardClaimedEvent(event)) {
               return(
                 <tr>
@@ -142,11 +141,14 @@ const EventsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, 
                   <td>RewardClaimed</td>
                   <td>{event.args.reward.toNumber() / 1000000}</td>
                   <td></td>
-                  <td>{event.args.user}</td>
+                  <td style={{color: "blue"}}>
+                    <Link href={`/${event.args.user}`}>
+                      {formatWallet(event.args.user)}
+                    </Link>
+                  </td>
                 </tr>
               )
             }
-            */
           }
         )}
       </tbody></table>

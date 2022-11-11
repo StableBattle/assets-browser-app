@@ -13,10 +13,9 @@ import formatKnightId from "../utils/formatKnightId";
 import formatWallet from "../utils/formatWallet";
 import formEventsData from "../utils/formEventsData";
 
-const EventsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, number> }) => {
-  const walletRoute = useRouter().query.wallet as string;
-
-  const data = formEventsData(filterByWallet(props.events, walletRoute));
+const EventsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, number>, wallet?: string }) => {
+  
+  const data = formEventsData(!!props.wallet ? filterByWallet(props.events, props.wallet) : props.events);
   
   return (
     <div>
@@ -108,7 +107,7 @@ const EventsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, 
                   <td>
                     <ul>
                       { event.args.ids.map(knight =>
-                          <li key={event.args.ids.findIndex(k => knight === k)}>
+                          <li style={{listStyleType: "none"}} key={event.args.ids.findIndex(k => knight === k)}>
                             { formatKnightId(knight) }
                           </li>
                         )
@@ -123,7 +122,7 @@ const EventsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, 
                 <tr>
                   <td>{event.blockNumber}</td>
                   <td>NewWinner</td>
-                  <td>{event.args.reward.toString()}</td>
+                  <td>{event.args.reward.toNumber() / 1000000}</td>
                   <td></td>
                   <td style={{color: "blue"}}>
                     <Link href={`/${event.args.user}`}>
@@ -140,7 +139,7 @@ const EventsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, 
                 <tr>
                   <td>{event.blockNumber}</td>
                   <td>RewardClaimed</td>
-                  <td>{event.args.reward.toString()}</td>
+                  <td>{event.args.reward.toNumber() / 1000000}</td>
                   <td></td>
                   <td>{event.args.user}</td>
                 </tr>

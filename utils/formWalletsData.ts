@@ -21,11 +21,6 @@ function handleTransfers(
   evtsSingle : TransferSingleEvent[],
   evtsBatch : TransferBatchEvent[]
   ) : walletData[] {
-    //From topics to differentiate between combined events
-    const topics = {
-      TransferSingle :  evtsSingle[0].topics[0],
-      TransferBatch : evtsBatch[0].topics[0]
-    }
     //Combine and sort Transfer events
     const evtsTransfer = [...evtsSingle, ...evtsBatch]
     .sort(

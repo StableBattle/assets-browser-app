@@ -1,9 +1,12 @@
 import useSWR from 'swr'
-import EventWalletSwitch from '../components/EventWalletSwitch'
 import fetchEvents from '../utils/eventsFetcher'
+import { useState } from 'react';
+import EventsTable from '../components/EventsTable';
+import WalletsTable from '../components/WalletsTable';
 
 export default function Home() {
   const SBDAddress = "0xC0662fAee7C84A03B1e58d60256cafeeb08Ab85d";
+  const [showEvents, setShowEvents] = useState(true);
 
   const { data, error } = useSWR(
     SBDAddress,
@@ -15,9 +18,24 @@ export default function Home() {
   }
   if (!data) return <div>Loading events data</div>;
 
+  const onShowEvents = () => setShowEvents(true);
+  const onShowWallets = () => setShowEvents(false);
+
   return (
-    <div>
-      <EventWalletSwitch events={ data.events } timestamps={ data.timestamps } />
-    </div>
+    <table>
+      <tbody>
+        <td style={{textAlign: "left"}}>
+          <div>
+            <input type="submit" value="Events" onClick={onShowEvents} />
+            <input type="submit" value="Wallets" onClick={onShowWallets} />
+            { 
+              showEvents ? 
+                <EventsTable events={ data.events } timestamps={ data.timestamps } /> :
+                <WalletsTable events={ data.events } />
+            }
+          </div>
+        </td>
+      </tbody>
+    </table>
   )
 }

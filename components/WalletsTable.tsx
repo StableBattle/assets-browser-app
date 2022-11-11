@@ -3,22 +3,15 @@ import formatWallet from "../utils/formatWallet";
 import { TypedEventsTuple } from "../utils/eventsFetcher";
 import formWalletsData from "../utils/formWalletsData";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import formatKnightId from "../utils/formatKnightId";
 
 const WalletsTable = (props: { events: TypedEventsTuple})  => {
-  const walletRoute = useRouter().query.wallet as string;
 
-  const data = formWalletsData(props.events)
-    .filter(wallet => !walletRoute || wallet.address === walletRoute);
+  const data = formWalletsData(props.events);
   
   return (
     <div>
-      {
-        !walletRoute ?
-        <h2>Wallets: {data.length}</h2> :
-        <></>
-      }
+      <h2>Wallets: {data.length}</h2>
       <table><tbody>
         <tr key={"header"}>
           <th>Wallet</th>

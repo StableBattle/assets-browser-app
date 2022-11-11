@@ -40,9 +40,6 @@ export default async function fetchEvents(address : string) :
     (await contract.queryFilter(contract.filters.NewWinner()));
   const evtsClaims : RewardClaimedEvent[] =
     (await contract.queryFilter(contract.filters.RewardClaimed()));
-  const blockNumbers = [...evtsSingle, ...evtsBatch, ...evtsWins, ...evtsClaims].map(
-    event => event.blockNumber
-  )
   let blockTimestamps: Map<number, number> = new Map();
   for (const event of [...evtsSingle, ...evtsBatch, ...evtsWins, ...evtsClaims]) {
     const timestamp = txHistory[txHistory.findIndex(tx => tx.blockNumber === event.blockNumber)].timestamp

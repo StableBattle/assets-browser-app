@@ -41,26 +41,26 @@ const AssetsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, 
               <tr key={knight.toString()}>
                 <td>{formatKnightId(knight.id)}</td>
                 <td>{formatTimestamp(props.timestamps.get(knight.recieveTime))}</td>
-                <td style={{color: "blue"}}>
-                  { 
-                    knight.reciveFrom === ethers.constants.AddressZero ?
-                      "Minted" :
-                      <Link href={`/${knight.reciveFrom}`}>
-                        {formatWallet(knight.reciveFrom)}
-                      </Link>
-                  }
-                </td>
+                {
+                  knight.reciveFrom === ethers.constants.AddressZero ?
+                  <td>Minted</td> :
+                  <td style={{color: "blue"}}>
+                    <Link href={`/${knight.reciveFrom}`}>
+                      {formatWallet(knight.reciveFrom)}
+                    </Link>
+                  </td>
+                }
                 <td>{!knight.lossTime ? "" : formatTimestamp(props.timestamps.get(knight.lossTime))}</td>
-                <td style={{color: "blue"}}>
-                  {
-                    !knight.lostTo ? "" :
-                      knight.lostTo === ethers.constants.AddressZero ?
-                        "Burned" : 
+                {
+                  !knight.lostTo ? "" :
+                    knight.lostTo === ethers.constants.AddressZero ?
+                      <td>Burned</td> : 
+                      <td style={{color: "blue"}}>
                         <Link href={`/${knight.lostTo}`}>
                           {formatWallet(knight.lostTo)}
                         </Link>
-                  }
-                  </td>
+                      </td>
+                }
               </tr>
             )) :
             wallet.knights
@@ -69,15 +69,15 @@ const AssetsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, 
               <tr key={knight.toString()}>
                 <td>{formatKnightId(knight.id)}</td>
                 <td>{formatTimestamp(props.timestamps.get(knight.recieveTime))}</td>
-                <td style={{color: "blue"}}>
-                  { 
-                    knight.reciveFrom === ethers.constants.AddressZero ?
-                      "Minted" :
-                      <Link href={`/${knight.reciveFrom}`}>
-                        {formatWallet(knight.reciveFrom)}
-                      </Link>
-                  }
-                </td>
+                {
+                  knight.reciveFrom === ethers.constants.AddressZero ?
+                  <td>Minted</td> :
+                  <td style={{color: "blue"}}>
+                    <Link href={`/${knight.reciveFrom}`}>
+                      {formatWallet(knight.reciveFrom)}
+                    </Link>
+                  </td>
+                }
               </tr>
             ))
         }

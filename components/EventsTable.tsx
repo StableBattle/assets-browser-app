@@ -1,6 +1,5 @@
-import { ethers, Event } from "ethers";
+import { ethers } from "ethers";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React from "react";
 import { TypedEventsTuple } from "../utils/eventsFetcher";
 import { 
@@ -16,7 +15,7 @@ import formatTimestamp from "../utils/fromatTimestamp";
 
 const EventsTable = (props: { events: TypedEventsTuple, timestamps: Map<number, number>, wallet?: string }) => {
   
-  const data : Array<any> = //"any" is here to prevent type error on rendering RewardClaimed event
+  const data : Array<any> = //"any" is here to prevent a type error on rendering RewardClaimed events
     formEventsData(!!props.wallet ? filterByWallet(props.events, props.wallet) : props.events);
   
   return (

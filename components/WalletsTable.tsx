@@ -19,11 +19,6 @@ const WalletsTable = (props: { events: TypedEventsTuple})  => {
           <th>Wins</th>
           <th>Rewards</th>
           <th>Knights</th>
-          {/*
-          {Object.keys(data.wallets[0]).map((key) => (
-            <th>{key}</th>
-          ))}
-          */}
         </tr>
         {data.map((wallet) => (
           <tr key={wallet.address}>

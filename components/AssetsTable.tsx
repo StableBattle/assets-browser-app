@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import formatWallet from "../utils/formatWallet";
 import { TypedEventsTuple } from "../utils/eventsFetcher";
 import formWalletsData from "../utils/formWalletsData";

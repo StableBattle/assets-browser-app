@@ -37,7 +37,7 @@ export default function Home() {
             <input type="submit" value="Wallets" onClick={onShowWallets} />
             { 
               showEvents ? 
-                <EventsTable events={ data.events } timestamps={ data.timestamps } /> :
+                <EventsTable events={ data.events } timestamps={ data.timestamps } reverts={data.reverts} /> :
                 <WalletsTable events={ data.events } />
             }
           </div>
@@ -53,7 +53,7 @@ export default function Home() {
                 </div>
                 { 
                   showWalletEvents ?
-                    <EventsTable events={ data.events } timestamps={ data.timestamps } wallet={ walletRoute } /> :
+                    <EventsTable events={ data.events } timestamps={ data.timestamps } wallet={ walletRoute } reverts={data.reverts} /> :
                     <AssetsTable events={ data.events } timestamps={ data.timestamps } />
                 }
               </div> :

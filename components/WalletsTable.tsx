@@ -32,7 +32,7 @@ const WalletsTable = (props: { events: TypedEventsTuple})  => {
             <td>{wallet.rewards.toString()}</td>
             <td>
               <ul style={{listStyleType: "none"}}>
-                { 
+                {
                   wallet.knights
                   .filter(knight => !knight.lossTime)
                   .map(knight =>

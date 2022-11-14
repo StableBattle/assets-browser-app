@@ -1,35 +1,43 @@
 import { ethers } from "ethers";
 import Link from "next/link";
 import React from "react";
-import { TypedEventsTuple } from "../utils/eventsFetcher";
+import { txRevert, TypedEventsTuple } from "../utils/eventsFetcher";
 import { 
   isNewWinnerEvent, 
   isRewardClaimedEvent, 
   isTransferBatchEvent, 
-  isTransferSingleEvent } from "../utils/eventTypeGuards";
-import filterByWallet from "../utils/filterByWallet";
+  isTransferSingleEvent, 
+  isTxRevert} from "../utils/eventTypeGuards";
+import filterEventsByWallet from "../utils/filterEventsByWallet";
 import formatKnightId from "../utils/formatKnightId";
 import formatWallet from "../utils/formatWallet";
-import formEventsData from "../utils/formEventsData";
+import sortEventsData from "../utils/sortEventsData";
 import formatTimestamp from "../utils/fromatTimestamp";
+import mixEventsReverts from "../utils/mixEventsReverts";
 
 const EventsTable = (
   props: {
     events: TypedEventsTuple,
     timestamps: Map<number, number>,
+    reverts: txRevert[]
     wallet?: string
   }
 ) => {
+  const filteredEvents = filterEventsByWallet(props.events, props.wallet);
+  const filteredReverts = !props.wallet ? props.reverts : 
+    props.reverts.filter(({ from }) => from === props.wallet);
+  const events = sortEventsData(filteredEvents);
   const data : Array<any> = //"any" is here to prevent a type error on rendering RewardClaimed events
-    formEventsData(!!props.wallet ? filterByWallet(props.events, props.wallet) : props.events);
+    mixEventsReverts(events, filteredReverts);
   
   return (
     <div>
-      <h2>Events: {data.length}</h2>
+      <h2>Events and Reverts: {data.length}</h2>
       <table>
         <thead>
           <tr key={"header"}>
-            <th>Block</th>
+            <th>ICO</th>
+            <th>DateTime</th>
             <th>Type</th>
             <th>Value USDT</th>
             <th>Wallet From</th>
@@ -44,6 +52,7 @@ const EventsTable = (
               if (event.args.from === ethers.constants.AddressZero) {
                 return(
                   <tr>
+                    <td style={{color: "green"}}>OK</td>
                     <td>{formatTimestamp(props.timestamps.get(event.blockNumber))}</td>
                     <td>KnightMinted</td>
                     <td>1000</td>
@@ -61,6 +70,7 @@ const EventsTable = (
               if (event.args.to === ethers.constants.AddressZero) {
                 return(
                   <tr>
+                    <td style={{color: "green"}}>OK</td>
                     <td>{formatTimestamp(props.timestamps.get(event.blockNumber))}</td>
                     <td>KnightBurned</td>
                     <td>-1000</td>
@@ -77,6 +87,7 @@ const EventsTable = (
               //Transfer
               return(
                 <tr>
+                  <td style={{color: "green"}}>OK</td>
                   <td>{formatTimestamp(props.timestamps.get(event.blockNumber))}</td>
                   <td>TransferSingle</td>
                   <td></td>
@@ -97,6 +108,7 @@ const EventsTable = (
             if (isTransferBatchEvent(event)) {
               return(
                 <tr>
+                  <td style={{color: "green"}}>OK</td>
                   <td>{formatTimestamp(props.timestamps.get(event.blockNumber))}</td>
                   <td>TransferBatch</td>
                   <td></td>
@@ -126,9 +138,10 @@ const EventsTable = (
             if (isNewWinnerEvent(event)) {
               return(
                 <tr>
+                  <td style={{color: "green"}}>OK</td>
                   <td>{formatTimestamp(props.timestamps.get(event.blockNumber))}</td>
                   <td>NewWinner</td>
-                  <td>{event.args.reward.toNumber() / 1000000}</td>
+                  <td>{event.args.reward.toNumber() / 1e6}</td>
                   <td></td>
                   <td style={{color: "blue"}}>
                     <Link href={`/${event.args.user}`}>
@@ -141,15 +154,32 @@ const EventsTable = (
             if (isRewardClaimedEvent(event)) {
               return(
                 <tr>
+                  <td style={{color: "green"}}>OK</td>
                   <td>{formatTimestamp(props.timestamps.get(event.blockNumber))}</td>
                   <td>RewardClaimed</td>
-                  <td>-{event.args.reward.toNumber() / 1000000}</td>
+                  <td>-{event.args.reward.toNumber() / 1e6}</td>
                   <td></td>
                   <td style={{color: "blue"}}>
                     <Link href={`/${event.args.user}`}>
                       {formatWallet(event.args.user)}
                     </Link>
                   </td>
+                </tr>
+              )
+            }
+            if(isTxRevert(event)) {
+              return(
+                <tr>
+                  <td style={{color: "red"}}>X</td>
+                  <td>{formatTimestamp(event.timestamp)}</td>
+                  <td>{event.functionName}</td>
+                  <td></td>
+                  <td style={{color: "blue"}}>
+                    <Link href={`/${event.from}`}>
+                      {formatWallet(event.from)}
+                    </Link>
+                  </td>
+                  <td>SBD</td>
                 </tr>
               )
             }

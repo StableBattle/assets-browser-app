@@ -1,8 +1,8 @@
 import { TypedEventsTuple } from "./eventsFetcher";
 
-export default function filterByWallet(
+export default function filterEventsByWallet(
   events : TypedEventsTuple,
-  wallet : string
+  wallet? : string
 ) {
   const evtsSingle = 
     events.evtsSingle.filter(

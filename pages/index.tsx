@@ -30,7 +30,7 @@ export default function Home() {
             <input type="submit" value="Wallets" onClick={onShowWallets} />
             { 
               showEvents ? 
-                <EventsTable events={ data.events } timestamps={ data.timestamps } /> :
+                <EventsTable events={ data.events } timestamps={ data.timestamps } reverts={data.reverts} /> :
                 <WalletsTable events={ data.events } />
             }
           </div>
